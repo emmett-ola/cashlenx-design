@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Lock,
   Mail,
   Eye,
   EyeOff,
+  Globe,
 } from "lucide-react";
 import { Button } from "../atoms/Button";
 import { Input } from "../atoms/Input";
 import { toast } from "sonner@2.0.3";
 import { AuthLayout } from "../molecules/AuthLayout";
 import { UserService } from "../../services/localStorage";
+import { LanguageSelector } from "../molecules/LanguageSelector";
+import { useSafeI18n } from "../../contexts/I18nContext";
 
 interface LoginProps {
   onLogin: (email: string, password: string) => void;
   onDemoMode: () => void;
   onSwitchToSignUp: () => void;
   onBack?: () => void;
+  initialUsername?: string;
+  initialPassword?: string;
 }
 
 export function Login({
@@ -23,10 +28,24 @@ export function Login({
   onDemoMode,
   onSwitchToSignUp,
   onBack,
+  initialUsername,
+  initialPassword,
 }: LoginProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { t } = useSafeI18n();
+  const [email, setEmail] = useState(initialUsername || "");
+  const [password, setPassword] = useState(initialPassword || "");
   const [showPassword, setShowPassword] = useState(false);
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+
+  // Update fields when initial values change (from signup auto-fill)
+  useEffect(() => {
+    if (initialUsername) {
+      setEmail(initialUsername);
+    }
+    if (initialPassword) {
+      setPassword(initialPassword);
+    }
+  }, [initialUsername, initialPassword]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,13 +53,6 @@ export function Login({
     // Validation
     if (!email || !password) {
       toast.error('Please fill in all fields.');
-      return;
-    }
-
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast.error('Please enter a valid email address.');
       return;
     }
 
@@ -60,7 +72,7 @@ export function Login({
       // Success - proceed with login
       onLogin(email, password);
     } else {
-      toast.error('Invalid email or password. Please try again.');
+      toast.error('Invalid username or password. Please try again.');
     }
   };
 
@@ -70,12 +82,12 @@ export function Login({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email or Username
+            {t('email_or_username')}
           </label>
           <Input
             value={email}
             onChange={setEmail}
-            placeholder="email@example.com or username"
+            placeholder={t('enter_username')}
             type="text"
             icon={<Mail className="w-5 h-5" />}
             className="w-full"
@@ -84,13 +96,13 @@ export function Login({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Password
+            {t('password')}
           </label>
           <div className="relative">
             <Input
               value={password}
               onChange={setPassword}
-              placeholder="Enter your password"
+              placeholder={t('enter_password')}
               type={showPassword ? "text" : "password"}
               icon={<Lock className="w-5 h-5" />}
               className="w-full"
@@ -116,16 +128,16 @@ export function Login({
               className="w-4 h-4 rounded border-gray-300 text-[#008080] focus:ring-[#008080]"
             />
             <span className="text-sm text-gray-600">
-              Remember me
+              {t('remember_me')}
             </span>
           </label>
           <button
             type="button"
             className="text-sm hover:underline"
             style={{ color: "var(--theme-color)" }}
-            onClick={() => toast.info("Password reset functionality coming soon!")}
+            onClick={() => toast.info(t('password_reset_coming_soon'))}
           >
-            Forgot Password?
+            {t('forgot_password')}
           </button>
         </div>
 
@@ -134,14 +146,26 @@ export function Login({
           className="w-full mt-6"
           disabled={!email || !password}
         >
-          Sign In
+          {t('sign_in')}
         </Button>
       </form>
+
+      {/* Sign Up */}
+      <p className="text-center text-sm text-gray-600 mt-4">
+        {t('no_account')}{" "}
+        <button
+          onClick={onSwitchToSignUp}
+          className="font-medium hover:underline"
+          style={{ color: "var(--theme-color)" }}
+        >
+          {t('sign_up')}
+        </button>
+      </p>
 
       {/* Divider */}
       <div className="flex items-center gap-4 my-6">
         <div className="flex-1 h-px bg-gray-300"></div>
-        <span className="text-sm text-gray-500">or</span>
+        <span className="text-sm text-gray-500">{t('or')}</span>
         <div className="flex-1 h-px bg-gray-300"></div>
       </div>
 
@@ -162,20 +186,35 @@ export function Login({
             "transparent";
         }}
       >
-        Continue with Demo Mode
+        {t('continue_demo')}
       </button>
 
-      {/* Sign Up */}
-      <p className="text-center text-sm text-gray-600 mt-6">
-        Don't have an account?{" "}
-        <button
-          onClick={onSwitchToSignUp}
-          className="font-medium hover:underline"
-          style={{ color: "var(--theme-color)" }}
-        >
-          Sign Up
-        </button>
-      </p>
+      {/* Change Language */}
+      <button
+        onClick={() => setShowLanguageSelector(true)}
+        className="w-full py-3 border-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 mt-3"
+        style={{
+          borderColor: "var(--theme-color)",
+          color: "var(--theme-color)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor =
+            "rgba(0, 128, 128, 0.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor =
+            "transparent";
+        }}
+      >
+        <Globe className="w-5 h-5" />
+        {t('change_language')}
+      </button>
+
+      {/* Language Selector Modal */}
+      <LanguageSelector
+        isOpen={showLanguageSelector}
+        onClose={() => setShowLanguageSelector(false)}
+      />
     </AuthLayout>
   );
 }

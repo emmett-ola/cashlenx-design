@@ -3,6 +3,7 @@ import { ArrowLeft, Camera, Mail, Phone, MapPin, Calendar, Edit2, Save, DollarSi
 import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
 import { DEMO_AVATAR, USER_AVATARS } from '../../constants/avatars';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 const currencies = [
   { code: 'USD', name: 'US Dollar', symbol: '$' },
@@ -28,6 +29,7 @@ interface ProfileProps {
 }
 
 export function Profile({ userName, userEmail, userAvatar, currency, onBack, onLogout, onSave }: ProfileProps) {
+  const { t } = useSafeI18n();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(userName);
   const [email, setEmail] = useState(userEmail);
@@ -71,23 +73,23 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
           </button>
           
           <div className="flex items-center justify-between">
-            <h1 className="text-white">Profile</h1>
+            <h1 className="text-white">{t('profile_title')}</h1>
             {!isEditing ? (
-              <button 
+              <button
                 onClick={() => setIsEditing(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
               >
                 <Edit2 className="w-4 h-4" />
-                <span className="text-sm font-medium">Edit</span>
+                <span className="text-sm font-medium">{t('profile_edit_button')}</span>
               </button>
             ) : (
-              <button 
+              <button
                 onClick={handleSave}
                 className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg hover:bg-white/90 transition-colors"
                 style={{ color: 'var(--theme-color)' }}
               >
                 <Save className="w-4 h-4" />
-                <span className="text-sm font-medium">Save</span>
+                <span className="text-sm font-medium">{t('profile_save_button')}</span>
               </button>
             )}
           </div>
@@ -137,18 +139,18 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
 
         {/* Profile Information */}
         <div className="bg-white rounded-2xl p-6 shadow-sm mb-6">
-          <h3 className="mb-4">Personal Information</h3>
-          
+          <h3 className="mb-4">{t('profile_personal_info')}</h3>
+
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
+                {t('profile_full_name')}
               </label>
               {isEditing ? (
                 <Input
                   value={name}
                   onChange={setName}
-                  placeholder="Enter your name"
+                  placeholder={t('profile_name_placeholder')}
                 />
               ) : (
                 <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-900">
@@ -160,7 +162,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Mail className="w-4 h-4 inline mr-1" />
-                Email Address
+                {t('profile_email')}
               </label>
               {/* Email is always read-only - cannot be changed */}
               <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-900">
@@ -171,13 +173,13 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Phone className="w-4 h-4 inline mr-1" />
-                Phone Number
+                {t('profile_phone')}
               </label>
               {isEditing ? (
                 <Input
                   value={phone}
                   onChange={setPhone}
-                  placeholder="Enter your phone"
+                  placeholder={t('profile_phone_placeholder')}
                   icon={<Phone className="w-5 h-5" />}
                 />
               ) : (
@@ -190,13 +192,13 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <MapPin className="w-4 h-4 inline mr-1" />
-                Location
+                {t('profile_location')}
               </label>
               {isEditing ? (
                 <Input
                   value={location}
                   onChange={setLocation}
-                  placeholder="Enter your location"
+                  placeholder={t('profile_location_placeholder')}
                   icon={<MapPin className="w-5 h-5" />}
                 />
               ) : (
@@ -209,7 +211,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Calendar className="w-4 h-4 inline mr-1" />
-                Date of Birth
+                {t('profile_birth_date')}
               </label>
               {isEditing ? (
                 <input
@@ -237,7 +239,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <DollarSign className="w-4 h-4 inline mr-1" />
-                Currency
+                {t('profile_currency')}
               </label>
               {isEditing ? (
                 <button
@@ -253,12 +255,12 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
                   }}
                   onBlur={(e) => e.currentTarget.style.borderColor = 'transparent'}
                 >
-                  <span>{currentCurrency ? `${currentCurrency.name} (${currentCurrency.symbol})` : 'Select Currency'}</span>
+                  <span>{currentCurrency ? `${currentCurrency.name} (${currentCurrency.symbol})` : t('profile_currency_select')}</span>
                   <DollarSign className="w-5 h-5 text-gray-400" />
                 </button>
               ) : (
                 <div className="px-4 py-3 bg-gray-50 rounded-lg text-gray-900">
-                  {currentCurrency ? `${currentCurrency.name} (${currentCurrency.symbol})` : 'Not set'}
+                  {currentCurrency ? `${currentCurrency.name} (${currentCurrency.symbol})` : t('profile_currency_not_set')}
                 </div>
               )}
             </div>
@@ -267,36 +269,36 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
 
         {/* Account Statistics */}
         <div className="bg-white rounded-2xl p-6 shadow-sm mb-6">
-          <h3 className="mb-4">Account Statistics</h3>
-          
+          <h3 className="mb-4">{t('profile_account_stats')}</h3>
+
           <div className="grid grid-cols-2 gap-4">
-            <div 
+            <div
               className="text-center p-4 rounded-xl"
               style={{ backgroundColor: 'color-mix(in srgb, var(--theme-color) 5%, white)' }}
             >
               <p className="text-2xl font-bold" style={{ color: 'var(--theme-color)' }}>147</p>
-              <p className="text-sm text-gray-600 mt-1">Transactions</p>
+              <p className="text-sm text-gray-600 mt-1">{t('profile_transactions')}</p>
             </div>
-            <div 
+            <div
               className="text-center p-4 rounded-xl"
               style={{ backgroundColor: 'color-mix(in srgb, var(--theme-color) 5%, white)' }}
             >
               <p className="text-2xl font-bold" style={{ color: 'var(--theme-color)' }}>8</p>
-              <p className="text-sm text-gray-600 mt-1">Active Budgets</p>
+              <p className="text-sm text-gray-600 mt-1">{t('profile_active_budgets')}</p>
             </div>
-            <div 
+            <div
               className="text-center p-4 rounded-xl"
               style={{ backgroundColor: 'color-mix(in srgb, var(--theme-color) 5%, white)' }}
             >
               <p className="text-2xl font-bold" style={{ color: 'var(--theme-color)' }}>3</p>
-              <p className="text-sm text-gray-600 mt-1">Months Active</p>
+              <p className="text-sm text-gray-600 mt-1">{t('profile_months_active')}</p>
             </div>
-            <div 
+            <div
               className="text-center p-4 rounded-xl"
               style={{ backgroundColor: 'color-mix(in srgb, var(--theme-color) 5%, white)' }}
             >
               <p className="text-2xl font-bold" style={{ color: 'var(--theme-color)' }}>$8.2K</p>
-              <p className="text-sm text-gray-600 mt-1">Saved</p>
+              <p className="text-sm text-gray-600 mt-1">{t('profile_saved')}</p>
             </div>
           </div>
         </div>
@@ -307,7 +309,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
           onClick={onLogout}
           className="w-full text-[#EF4444] hover:bg-red-50 border-2 border-red-200"
         >
-          Log Out
+          {t('profile_logout_button')}
         </Button>
       </div>
 
@@ -318,7 +320,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-semibold text-gray-900">
-                Select Currency
+                {t('profile_currency_modal_title')}
               </h2>
               <button
                 onClick={() => {
@@ -336,7 +338,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
               <Input
                 value={currencySearch}
                 onChange={setCurrencySearch}
-                placeholder="Search currency..."
+                placeholder={t('profile_currency_search_placeholder')}
                 icon={<Search className="w-5 h-5" />}
               />
             </div>
@@ -387,7 +389,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="font-semibold text-gray-900">
-                Choose Avatar
+                {t('profile_avatar_modal_title')}
               </h2>
               <button
                 onClick={() => setShowAvatarModal(false)}
@@ -438,7 +440,7 @@ export function Profile({ userName, userEmail, userAvatar, currency, onBack, onL
             {/* Info */}
             <div className="p-4 bg-blue-50 rounded-xl">
               <p className="text-sm text-gray-700">
-                💡 <strong>Tip:</strong> Choose an avatar that best represents you!
+                {t('profile_avatar_tip')}
               </p>
             </div>
           </div>

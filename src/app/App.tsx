@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import { Splash } from './components/screens/Splash';
 import { Onboarding } from './components/screens/Onboarding';
 import { CurrencySetup } from './components/screens/CurrencySetup';
+import { Setup } from './components/screens/Setup';
 import { Dashboard } from './components/screens/Dashboard';
 import { AddTransaction } from './components/screens/AddTransaction';
 import { CategoryManagement } from './components/screens/CategoryManagement';
@@ -19,6 +20,7 @@ import { storage } from './utils/storage';
 import { dataService } from './services/dataService';
 import { DEMO_AVATAR } from './constants/avatars';
 import { StorageService } from './services/localStorage';
+import { I18nProvider } from './contexts/I18nContext';
 
 // Suppress React DevTools shim warning (caused by Figma Make environment)
 if (typeof window !== 'undefined') {
@@ -35,7 +37,7 @@ if (typeof window !== 'undefined') {
   };
 }
 
-type AppState = 'splash' | 'onboarding' | 'currency' | 'app' | 'login' | 'signup' | 'profile' | 'morestats';
+type AppState = 'splash' | 'onboarding' | 'currency' | 'setup' | 'app' | 'login' | 'signup' | 'profile' | 'morestats';
 type ActiveTab = 'home' | 'category' | 'budget' | 'settings' | 'transactions';
 
 export default function App() {
@@ -71,7 +73,10 @@ export default function App() {
   });
   
   const [canGoBackFromLogin, setCanGoBackFromLogin] = useState(false);
-  
+
+  // Auto-fill credentials from signup
+  const [autoFillCredentials, setAutoFillCredentials] = useState<{ email: string; password: string } | null>(null);
+
   // Theme color with localStorage persistence
   const [themeColor, setThemeColor] = useState(() => {
     return storage.get<string>('theme-color', '#008080') || '#008080';
@@ -118,6 +123,13 @@ export default function App() {
     setAppState('app');
   };
 
+  const handleSetupComplete = (selectedCurrency: string) => {
+    setCurrency(selectedCurrency);
+    // Mark setup as completed for this user
+    storage.set(`hasCompletedSetup_${userEmail}`, true);
+    setAppState('app');
+  };
+
   const handleAddTransaction = (transaction: any) => {
     // Use dataService to save transaction
     dataService.addTransaction(transaction);
@@ -139,40 +151,55 @@ export default function App() {
 
   const handleLogin = (email: string, password: string) => {
     // Extract name from email (simple demo logic)
-    const name = email.split('@')[0].replace(/[._-]/g, ' ').split(' ').map(word => 
+    const name = email.split('@')[0].replace(/[._-]/g, ' ').split(' ').map(word =>
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
-    
+
     setUserName(name);
     setUserEmail(email);
     setIsLoggedIn(true);
-    
+
     // Save to localStorage using storage utility
     storage.set('isLoggedIn', true);
     storage.set('userName', name);
     storage.set('userEmail', email);
-    
+
+    // Clear auto-fill credentials
+    setAutoFillCredentials(null);
+
     setCanGoBackFromLogin(false);
-    setAppState('app');
+
+    // Check if this specific user has completed setup
+    const hasCompletedSetup = storage.get<boolean>(`hasCompletedSetup_${email}`, false);
+    if (hasCompletedSetup) {
+      setAppState('app');
+    } else {
+      // First-time login for this user, show setup
+      setAppState('setup');
+    }
   };
 
   const handleDemoMode = () => {
     // Initialize demo data in localStorage (ONLY happens here)
     // This resets demo data every time user enters demo mode
     StorageService.initializeDemoData();
-    
+
     // Continue with demo data
     setIsLoggedIn(false);
     setUserName('Demo Data');
     setUserEmail('demo@cashlengx.app');
     setUserAvatar(DEMO_AVATAR);
-    
+
     // Clear login from localStorage but keep onboarding flag
     storage.set('isLoggedIn', false);
     storage.set('userName', 'Demo Data');
     storage.set('userEmail', 'demo@cashlengx.app');
     storage.set('userAvatar', DEMO_AVATAR);
-    
+
+    // Clear auto-fill credentials
+    setAutoFillCredentials(null);
+
+    // Demo mode always goes directly to app, skip setup
     setAppState('app');
   };
 
@@ -180,18 +207,25 @@ export default function App() {
     setAppState('app');
   };
 
+  const handleSignUpComplete = (email: string, password: string) => {
+    // Store credentials for auto-fill
+    setAutoFillCredentials({ email, password });
+    // Navigate to login page
+    setAppState('login');
+  };
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserName('Demo Data');
     setUserEmail('demo@cashlengx.app');
     setUserAvatar(DEMO_AVATAR);
-    
+
     // Clear login from localStorage
     storage.set('isLoggedIn', false);
     storage.set('userName', 'Demo Data');
     storage.set('userEmail', 'demo@cashlengx.app');
     storage.set('userAvatar', DEMO_AVATAR);
-    
+
     setAppState('login');
     setActiveTab('home');
   };
@@ -219,24 +253,36 @@ export default function App() {
 
   // Render splash screen
   if (appState === 'splash') {
-    return <Splash onComplete={handleSplashComplete} />;
+    return (
+      <I18nProvider>
+        <Splash onComplete={handleSplashComplete} />
+      </I18nProvider>
+    );
   }
 
   // Render onboarding
   if (appState === 'onboarding') {
-    return <Onboarding onComplete={handleOnboardingComplete} />;
+    return (
+      <I18nProvider>
+        <Onboarding onComplete={handleOnboardingComplete} />
+      </I18nProvider>
+    );
   }
 
   // Render currency setup
   if (appState === 'currency') {
-    return <CurrencySetup onComplete={handleCurrencySetup} />;
+    return (
+      <I18nProvider>
+        <CurrencySetup onComplete={handleCurrencySetup} />
+      </I18nProvider>
+    );
   }
 
-  // Render login screen
-  if (appState === 'login') {
+  // Render setup screen (first-time login)
+  if (appState === 'setup') {
     return (
-      <>
-        <Toaster 
+      <I18nProvider>
+        <Toaster
           position="bottom-center"
           toastOptions={{
             style: {
@@ -253,21 +299,52 @@ export default function App() {
             className: 'cashlengx-toast',
           }}
         />
-        <Login 
-          onLogin={handleLogin} 
-          onDemoMode={handleDemoMode} 
-          onSwitchToSignUp={() => setAppState('signup')}
-          onBack={canGoBackFromLogin ? handleBackToApp : undefined} 
+        <Setup onComplete={handleSetupComplete} />
+      </I18nProvider>
+    );
+  }
+
+  // Render login screen
+  if (appState === 'login') {
+    return (
+      <I18nProvider>
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            style: {
+              background: 'white',
+              color: '#1F2937',
+              border: '1px solid #E5E7EB',
+              borderRadius: '12px',
+              padding: '16px',
+              fontSize: '14px',
+              fontWeight: '500',
+              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+              maxWidth: '400px',
+            },
+            className: 'cashlengx-toast',
+          }}
         />
-      </>
+        <Login
+          onLogin={handleLogin}
+          onDemoMode={handleDemoMode}
+          onSwitchToSignUp={() => {
+            setAutoFillCredentials(null);
+            setAppState('signup');
+          }}
+          onBack={canGoBackFromLogin ? handleBackToApp : undefined}
+          initialUsername={autoFillCredentials?.email}
+          initialPassword={autoFillCredentials?.password}
+        />
+      </I18nProvider>
     );
   }
 
   // Render sign up screen
   if (appState === 'signup') {
     return (
-      <>
-        <Toaster 
+      <I18nProvider>
+        <Toaster
           position="bottom-center"
           toastOptions={{
             style: {
@@ -284,38 +361,49 @@ export default function App() {
             className: 'cashlengx-toast',
           }}
         />
-        <SignUp 
+        <SignUp
           onSignUp={handleLogin}
-          onSwitchToLogin={() => setAppState('login')}
+          onSignUpComplete={handleSignUpComplete}
+          onSwitchToLogin={() => {
+            setAutoFillCredentials(null);
+            setAppState('login');
+          }}
           onBack={canGoBackFromLogin ? handleBackToApp : undefined}
         />
-      </>
+      </I18nProvider>
     );
   }
 
   // Render profile screen
   if (appState === 'profile') {
     return (
-      <Profile
-        userName={userName}
-        userEmail={userEmail}
-        userAvatar={userAvatar}
-        currency={currency}
-        onBack={handleBackToApp}
-        onLogout={handleLogout}
-        onSave={handleProfileSave}
-      />
+      <I18nProvider>
+        <Profile
+          userName={userName}
+          userEmail={userEmail}
+          userAvatar={userAvatar}
+          currency={currency}
+          onBack={handleBackToApp}
+          onLogout={handleLogout}
+          onSave={handleProfileSave}
+        />
+      </I18nProvider>
     );
   }
 
   // Render more statistics screen
   if (appState === 'morestats') {
-    return <MoreStatistics onBack={handleBackToApp} />;
+    return (
+      <I18nProvider>
+        <MoreStatistics onBack={handleBackToApp} />
+      </I18nProvider>
+    );
   }
 
   // Render main app
   return (
-    <div className="min-h-screen bg-[#F9FAFB]">
+    <I18nProvider>
+      <div className="min-h-screen bg-[#F9FAFB]">
       <Toaster 
         position="bottom-center"
         toastOptions={{
@@ -383,6 +471,7 @@ export default function App() {
           onAddClick={() => setShowAddTransaction(true)}
         />
       )}
-    </div>
+      </div>
+    </I18nProvider>
   );
 }

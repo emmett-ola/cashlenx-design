@@ -5,6 +5,7 @@ import { TransactionTile } from '../molecules/TransactionTile';
 import { typography, avatarPresets, layout } from '../../constants/sharedStyles';
 import { dataService } from '../../services/dataService';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 interface DashboardProps {
   userName: string;
@@ -18,11 +19,13 @@ interface DashboardProps {
 }
 
 export function Dashboard({ userName, userAvatar, onAddTransaction, onProfileClick, onSeeAllTransactions, onNavigateToMoreStats, isDemo = false, refreshKey }: DashboardProps) {
+  const { t } = useSafeI18n();
+
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return t('dashboard_greeting_morning');
+    if (hour < 18) return t('dashboard_greeting_afternoon');
+    return t('dashboard_greeting_evening');
   };
 
   // Use state to store transactions and summary, refresh when refreshKey changes
@@ -35,15 +38,31 @@ export function Dashboard({ userName, userAvatar, onAddTransaction, onProfileCli
     setAllTransactions(dataService.getTransactions());
   }, [refreshKey]);
   
-  // Get only the 5 most recent transactions, sorted by date DESC, then ID DESC
-  const recentTransactions = allTransactions
+  // Get recent transactions with a mix of both income and expense for visual variety
+  const sortedTransactions = allTransactions
     .sort((a, b) => {
       const dateCompare = new Date(b.date).getTime() - new Date(a.date).getTime();
       if (dateCompare !== 0) return dateCompare;
       // If dates are equal, sort by ID descending
       return b.id.localeCompare(a.id);
+    });
+
+  // Separate by type
+  const expenseTransactions = sortedTransactions.filter(t => t.type === 'expense');
+  const incomeTransactions = sortedTransactions.filter(t => t.type === 'income');
+
+  // Take 3 expenses and 2 incomes (or whatever is available)
+  const recentExpenses = expenseTransactions.slice(0, 3);
+  const recentIncomes = incomeTransactions.slice(0, 2);
+
+  // Combine and re-sort by date to maintain chronological order
+  const recentTransactions = [...recentExpenses, ...recentIncomes]
+    .sort((a, b) => {
+      const dateCompare = new Date(b.date).getTime() - new Date(a.date).getTime();
+      if (dateCompare !== 0) return dateCompare;
+      return b.id.localeCompare(a.id);
     })
-    .slice(0, 5);
+    .slice(0, 5); // Take max 5 total
 
   // Stats data
   const categoryData = [
@@ -117,13 +136,13 @@ export function Dashboard({ userName, userAvatar, onAddTransaction, onProfileCli
         {/* Recent Transactions */}
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h2>Recent Activity</h2>
-            <button 
+            <h2>{t('dashboard_recent_activity')}</h2>
+            <button
               onClick={onSeeAllTransactions}
-              className="font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all" 
+              className="font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
               style={{ color: 'var(--theme-color)' }}
             >
-              See All
+              {t('dashboard_see_all')}
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -146,7 +165,7 @@ export function Dashboard({ userName, userAvatar, onAddTransaction, onProfileCli
 
         {/* Spending by Category */}
         <div className="bg-white rounded-2xl p-6 shadow-sm mt-6">
-          <h3 className="mb-4">Spending by Category</h3>
+          <h3 className="mb-4">{t('dashboard_spending_by_category')}</h3>
           
           <div className="flex items-center justify-center mb-4">
             <ResponsiveContainer width="100%" height={200}>
@@ -186,15 +205,15 @@ export function Dashboard({ userName, userAvatar, onAddTransaction, onProfileCli
           </div>
           
           {/* More Statistics Link */}
-          <button 
+          <button
             onClick={onNavigateToMoreStats}
-            className="w-full mt-6 py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:shadow-md transition-all" 
-            style={{ 
+            className="w-full mt-6 py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:shadow-md transition-all"
+            style={{
               backgroundColor: 'rgba(var(--theme-color-rgb, 0, 128, 128), 0.1)',
               color: 'var(--theme-color)'
             }}
           >
-            More Statistics Charts
+            {t('dashboard_more_statistics')}
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>

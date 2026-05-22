@@ -3,6 +3,7 @@ import { ArrowLeft, Filter, X, Calendar, ChevronDown, Receipt } from 'lucide-rea
 import { TransactionTile } from '../molecules/TransactionTile';
 import { dataService } from '../../services/dataService';
 import { typography, card, layout } from '../../constants/sharedStyles';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 interface TransactionsProps {
   onBack?: () => void;
@@ -12,6 +13,7 @@ interface TransactionsProps {
 type TransactionType = 'all' | 'income' | 'expense';
 
 export function Transactions({ onBack, refreshKey }: TransactionsProps) {
+  const { t } = useSafeI18n();
   const [showFilters, setShowFilters] = useState(false);
   const [selectedType, setSelectedType] = useState<TransactionType>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -141,7 +143,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
             <button onClick={onBack} className={layout.headerBackButton}>
               <ArrowLeft className="w-5 h-5 text-gray-700" />
             </button>
-            <h1 className={layout.headerTitle}>Transactions</h1>
+            <h1 className={layout.headerTitle}>{t('transactions_title')}</h1>
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`${layout.headerAction} relative`}
@@ -165,7 +167,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
               {/* Type Filter */}
               <div>
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
-                  Type
+                  {t('transactions_filter_type')}
                 </label>
                 <div className="flex gap-2">
                   {(['all', 'income', 'expense'] as TransactionType[]).map(type => (
@@ -184,7 +186,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
                       }`}
                       style={selectedType === type ? { backgroundColor: 'var(--theme-color)' } : {}}
                     >
-                      {type === 'all' ? 'All' : type === 'income' ? 'Income' : 'Expense'}
+                      {type === 'all' ? t('transactions_all') : type === 'income' ? t('transactions_income') : t('transactions_expense')}
                     </button>
                   ))}
                 </div>
@@ -193,7 +195,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
               {/* Category Filter */}
               <div>
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
-                  Category
+                  {t('transactions_filter_category')}
                 </label>
                 <div className="relative">
                   <select
@@ -214,7 +216,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
                   >
                     {categoryOptions.map(cat => (
                       <option key={cat} value={cat}>
-                        {cat === 'all' ? 'All Categories' : cat}
+                        {cat === 'all' ? t('transactions_all_categories') : cat}
                       </option>
                     ))}
                   </select>
@@ -225,7 +227,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
               {/* Date Range Filter */}
               <div>
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
-                  Date Range
+                  {t('transactions_filter_date_range')}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
@@ -273,7 +275,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
                   onClick={clearAllFilters}
                   className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium text-sm rounded-xl transition-colors"
                 >
-                  Clear All Filters
+                  {t('transactions_clear_filters')}
                 </button>
               )}
             </div>
@@ -287,7 +289,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
           <div className="flex flex-wrap gap-2">
             {selectedType !== 'all' && (
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-700">
-                {selectedType === 'income' ? 'Income' : 'Expense'}
+                {selectedType === 'income' ? t('transactions_income') : t('transactions_expense')}
                 <button
                   onClick={() => setSelectedType('all')}
                   className="p-0.5 hover:bg-gray-100 rounded-full transition-colors"
@@ -340,14 +342,14 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
       <div className={`${layout.container} pt-4 pb-3`}>
         <p className="text-sm text-gray-600">
           {filteredTransactions.length === 0 ? (
-            'No transactions found'
+            t('transactions_no_transactions')
           ) : filteredTransactions.length === 1 ? (
-            '1 transaction'
+            t('transactions_one_transaction')
           ) : (
-            `${filteredTransactions.length} transactions`
+            `${filteredTransactions.length} ${t('transactions_count')}`
           )}
           {hasActiveFilters && (
-            <span className="text-gray-400"> (filtered)</span>
+            <span className="text-gray-400"> ({t('transactions_filtered')})</span>
           )}
         </p>
       </div>
@@ -361,12 +363,12 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
               <Receipt className="w-10 h-10 text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No transactions found
+              {t('transactions_empty_title')}
             </h3>
             <p className="text-sm text-gray-500 text-center max-w-xs mb-6">
               {hasActiveFilters
-                ? 'Try adjusting your filters to see more results'
-                : 'Start tracking your finances by adding your first transaction'}
+                ? t('transactions_empty_filtered')
+                : t('transactions_empty_message')}
             </p>
             {hasActiveFilters && (
               <button
@@ -374,7 +376,7 @@ export function Transactions({ onBack, refreshKey }: TransactionsProps) {
                 className="px-6 py-2.5 text-white font-medium text-sm rounded-xl transition-all hover:shadow-md"
                 style={{ backgroundColor: 'var(--theme-color)' }}
               >
-                Clear Filters
+                {t('transactions_clear_filters')}
               </button>
             )}
           </div>

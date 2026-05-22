@@ -4,12 +4,14 @@ import { Button } from '../atoms/Button';
 import { layout } from '../../constants/sharedStyles';
 import { BudgetService, SystemConfigService } from '../../services/localStorage';
 import { BudgetEntity } from '../../types/entities';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 interface BudgetProps {
   refreshKey?: number; // Add refresh key to trigger re-renders
 }
 
 export function Budget({ refreshKey }: BudgetProps = {}) {
+  const { t } = useSafeI18n();
   const [budgets, setBudgets] = useState<BudgetEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,8 +64,8 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
         <div className={layout.headerContent}>
           <div className="flex items-center justify-between py-6">
             <div>
-              <h1 className={layout.headerTitle}>Budgets</h1>
-              <p className="text-gray-500 text-sm mt-1">Manage your spending limits</p>
+              <h1 className={layout.headerTitle}>{t('budget_title')}</h1>
+              <p className="text-gray-500 text-sm mt-1">{t('budget_subtitle')}</p>
             </div>
             <Button variant="fab" className="w-12 h-12">
               <Plus className="w-6 h-6" />
@@ -78,7 +80,7 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#008080] mx-auto mb-4"></div>
-              <p className="text-gray-500">Loading budgets...</p>
+              <p className="text-gray-500">{t('budget_loading')}</p>
             </div>
           </div>
         )}
@@ -95,16 +97,16 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
           <>
             {/* Overall Budget Summary */}
             <div className="rounded-2xl p-6 text-white shadow-lg" style={{ background: 'linear-gradient(135deg, var(--theme-color) 0%, #4DB6AC 100%)' }}>
-              <p className="text-sm opacity-90 mb-2">Total Monthly Budget</p>
+              <p className="text-sm opacity-90 mb-2">{t('budget_total_monthly')}</p>
               <h1 className="text-display mb-4">${totalLimit.toFixed(2)}</h1>
-              
+
               <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm">Spent: ${totalSpent.toFixed(2)}</span>
-                  <span className="text-sm">Remaining: ${totalRemaining.toFixed(2)}</span>
+                  <span className="text-sm">{t('budget_spent')}: ${totalSpent.toFixed(2)}</span>
+                  <span className="text-sm">{t('budget_remaining')}: ${totalRemaining.toFixed(2)}</span>
                 </div>
                 <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-white rounded-full transition-all"
                     style={{ width: `${Math.min(totalPercentage, 100)}%` }}
                   />
@@ -114,14 +116,14 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
 
             {/* Category Budgets */}
             <div className="space-y-4 mb-24">
-              <h2>Category Budgets</h2>
+              <h2>{t('budget_category_budgets')}</h2>
               
               {budgets.length === 0 ? (
                 <div className="bg-gray-50 rounded-xl p-8 text-center">
-                  <p className="text-gray-500 mb-4">No budgets set yet</p>
+                  <p className="text-gray-500 mb-4">{t('budget_no_budgets')}</p>
                   <Button variant="primary">
                     <Plus className="w-4 h-4 mr-2" />
-                    Create Your First Budget
+                    {t('budget_create_first')}
                   </Button>
                 </div>
               ) : (
@@ -153,15 +155,15 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
                         {isOverBudget && (
                           <div className="flex items-center gap-1 text-[#EF4444]">
                             <AlertCircle className="w-4 h-4" />
-                            <span className="text-xs font-medium">Over budget</span>
+                            <span className="text-xs font-medium">{t('budget_over_budget')}</span>
                           </div>
                         )}
                       </div>
 
                       <div className="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full rounded-full transition-all"
-                          style={{ 
+                          style={{
                             width: `${percentage}%`,
                             backgroundColor: getStatusColor(budget.spentAmount || 0, budget.limitAmount)
                           }}
@@ -169,14 +171,14 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
                       </div>
 
                       <div className="flex justify-between items-center mt-2">
-                        <span 
+                        <span
                           className="text-xs font-medium"
                           style={{ color: getStatusColor(budget.spentAmount || 0, budget.limitAmount) }}
                         >
-                          {percentage.toFixed(0)}% used
+                          {percentage.toFixed(0)}% {t('budget_used')}
                         </span>
                         <span className="text-xs text-gray-500">
-                          ${(budget.limitAmount - (budget.spentAmount || 0)).toFixed(2)} left
+                          ${(budget.limitAmount - (budget.spentAmount || 0)).toFixed(2)} {t('budget_left')}
                         </span>
                       </div>
                     </div>
@@ -188,14 +190,14 @@ export function Budget({ refreshKey }: BudgetProps = {}) {
             {/* Add Budget CTA */}
             {budgets.length > 0 && (
               <div className="mt-6 mb-6">
-                <button 
+                <button
                   className="w-full py-4 text-white rounded-xl font-semibold shadow-lg flex items-center justify-center gap-2 hover:shadow-xl transition-shadow"
-                  style={{ 
-                    background: `linear-gradient(to right, var(--theme-color), ${adjustColorBrightness(getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim(), 30)})` 
+                  style={{
+                    background: `linear-gradient(to right, var(--theme-color), ${adjustColorBrightness(getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim(), 30)})`
                   }}
                 >
                   <Plus className="w-5 h-5" />
-                  Add New Budget
+                  {t('budget_add_new')}
                 </button>
               </div>
             )}

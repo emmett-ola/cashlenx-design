@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- App Info -->
+  <string name="app_name">CashLenX</string>
+  <string name="app_tagline">您值得信賴的個人財務管理夥伴，輕鬆自信地管理財務。</string>
+
+  <!-- Onboarding -->
+  <string name="skip">跳過</string>
+  <string name="next">下一步</string>
+  <string name="get_started">開始使用</string>
+  <string name="onboarding_slide1_title">記錄您的支出</string>
+  <string name="onboarding_slide1_desc">輕鬆監控每一筆交易，掌握您的消費習慣。</string>
+  <string name="onboarding_slide2_title">規劃您的預算</string>
+  <string name="onboarding_slide2_desc">設定智慧預算，在接近限額時收到通知。</string>
+  <string name="onboarding_slide3_title">獲取洞察</string>
+  <string name="onboarding_slide3_desc">透過精美的圖表和可操作的洞察視覺化您的財務健康狀況。</string>
+
+  <!-- Common -->
+  <string name="close">關閉</string>
+  <string name="cancel">取消</string>
+  <string name="save">儲存</string>
+  <string name="apply">套用</string>
+  <string name="continue">繼續</string>
+  <string name="done">完成</string>
+
+  <!-- Navigation -->
+  <string name="nav_home">首頁</string>
+  <string name="nav_transactions">交易</string>
+  <string name="nav_category">分類</string>
+  <string name="nav_budget">預算</string>
+  <string name="nav_settings">設定</string>
+
+  <!-- Dashboard -->
+  <string name="greeting_morning">早安</string>
+  <string name="greeting_afternoon">午安</string>
+  <string name="greeting_evening">晚安</string>
+  <string name="total_balance">總餘額</string>
+  <string name="day_balance">今日餘額</string>
+  <string name="month_balance">本月餘額</string>
+  <string name="year_balance">本年餘額</string>
+  <string name="income">收入</string>
+  <string name="expense">支出</string>
+  <string name="recent_activity">最近活動</string>
+  <string name="see_all">查看全部</string>
+  <string name="spending_by_category">分類支出</string>
+  <string name="more_statistics">更多統計圖表</string>
+  <string name="dashboard_recent_activity">最近活動</string>
+  <string name="dashboard_see_all">查看全部</string>
+  <string name="dashboard_spending_by_category">分類支出</string>
+  <string name="dashboard_more_statistics">更多統計圖表</string>
+
+  <!-- Settings -->
+  <string name="settings">設定</string>
+  <string name="settings_subtitle">個人化您的體驗</string>
+  <string name="setting_section">設定</string>
+  <string name="theme">主題</string>
+  <string name="currency">貨幣</string>
+  <string name="language">語言</string>
+  <string name="more_setting">更多設定</string>
+  <string name="support_section">支援</string>
+  <string name="about">關於</string>
+
+  <!-- Theme Modal -->
+  <string name="choose_theme_color">選擇主題顏色</string>
+  <string name="theme_selected">已選擇</string>
+  <string name="theme_note">此主題顏色將套用於整個應用程式的主要按鈕、強調色和醒目提示。</string>
+
+  <!-- Currency Modal -->
+  <string name="select_currency">選擇貨幣</string>
+  <string name="currency_description">選擇您所有交易的主要貨幣</string>
+
+  <!-- Language Modal -->
+  <string name="select_language">選擇語言</string>
+  <string name="language_description">選擇您的偏好語言</string>
+
+  <!-- About Modal -->
+  <string name="about_title">關於 CashLenX</string>
+  <string name="version">版本</string>
+  <string name="build_date">建置日期</string>
+  <string name="check_update">檢查更新</string>
+  <string name="copyright">© 2026 CashLenX. 保留所有權利。</string>
+
+  <!-- Auth -->
+  <string name="auth_subtitle">您的財務管理夥伴</string>
+  <string name="login">登入</string>
+  <string name="sign_in">登入</string>
+  <string name="signup">註冊</string>
+  <string name="sign_up">註冊</string>
+  <string name="email_or_username">電子郵件或使用者名稱</string>
+  <string name="username">使用者名稱</string>
+  <string name="email">電子郵件</string>
+  <string name="password">密碼</string>
+  <string name="confirm_password">確認密碼</string>
+  <string name="remember_me">記住我</string>
+  <string name="forgot_password">忘記密碼？</string>
+  <string name="password_reset_coming_soon">密碼重設功能即將推出！</string>
+  <string name="demo_mode">繼續使用示範模式</string>
+  <string name="continue_demo">繼續使用示範模式</string>
+  <string name="create_account">建立您的帳戶</string>
+  <string name="already_have_account">已有帳戶？</string>
+  <string name="have_account">已有帳戶？</string>
+  <string name="dont_have_account">還沒有帳戶？</string>
+  <string name="no_account">還沒有帳戶？</string>
+  <string name="or">或</string>
+  <string name="change_language">變更語言</string>
+  <string name="enter_username">請輸入使用者名稱</string>
+  <string name="enter_password">請輸入密碼</string>
+  <string name="choose_username">選擇使用者名稱</string>
+  <string name="password_min_chars">至少 6 個字元</string>
+  <string name="reenter_password">請再次輸入密碼</string>
+
+  <!-- Email Verification -->
+  <string name="send_verification_code">傳送驗證碼</string>
+  <string name="verify_email">驗證您的電子郵件</string>
+  <string name="verification_code">驗證碼</string>
+  <string name="enter_code">輸入 6 位驗證碼</string>
+  <string name="resend_code">重新傳送驗證碼</string>
+  <string name="resend_in">重新傳送驗證碼，倒數計時</string>
+  <string name="verifying">驗證中...</string>
+  <string name="verify_code_button">驗證驗證碼</string>
+  <string name="back_to_email">返回修改電子郵件</string>
+  <string name="complete_profile">完善您的資料</string>
+  <string name="complete_registration">完成註冊</string>
+  <string name="creating_account">建立帳戶中...</string>
+
+  <!-- Currency Setup -->
+  <string name="currency_setup_title">選擇您的貨幣</string>
+  <string name="currency_setup_subtitle">選擇您所有交易的主要貨幣</string>
+  <string name="currency_setup_search_placeholder">搜尋貨幣...</string>
+  <string name="currency_setup_continue_button">繼續</string>
+
+  <!-- Setup -->
+  <string name="welcome_title">歡迎使用 CashLenX！</string>
+  <string name="welcome_subtitle">讓我們個人化您的體驗</string>
+  <string name="currency_preference">貨幣偏好</string>
+  <string name="setup_finish">完成設定</string>
+  <string name="setup_change_later">您可以隨時在設定中變更這些設定</string>
+  <string name="setup_currency_preference">貨幣偏好</string>
+  <string name="setup_currency_description">選擇您所有交易的主要貨幣</string>
+  <string name="setup_search_placeholder">搜尋貨幣...</string>
+  <string name="setup_finish_button">完成設定</string>
+  <string name="setup_change_settings_note">您可以隨時在設定中變更這些設定</string>
+
+  <!-- Notifications -->
+  <string name="coming_soon">即將推出！</string>
+  <string name="latest_version">您正在使用最新版本！</string>
+  <string name="account_created">帳戶建立成功！請登入以繼續。</string>
+  <string name="welcome_back">歡迎回來</string>
+
+  <!-- Add Transaction -->
+  <string name="add_transaction_title">新增交易</string>
+  <string name="add_transaction_amount_label">金額</string>
+  <string name="add_transaction_amount_error">金額必須大於 0</string>
+  <string name="add_transaction_hide_details">隱藏詳情</string>
+  <string name="add_transaction_show_details">顯示詳情</string>
+  <string name="add_transaction_category_label">分類</string>
+  <string name="add_transaction_category_error">請選擇分類</string>
+  <string name="add_transaction_no_categories">沒有可用的分類。請在設定中建立。</string>
+  <string name="add_transaction_selected">已選擇</string>
+  <string name="add_transaction_date_label">日期</string>
+  <string name="add_transaction_note_label">備註（選填）</string>
+  <string name="add_transaction_note_placeholder">新增備註...</string>
+  <string name="add_transaction_submit_button">新增交易</string>
+
+  <!-- Category Management -->
+  <string name="category_management_title">分類</string>
+  <string name="category_management_subtitle">管理您的分類</string>
+  <string name="category_management_no_categories">還沒有{type}分類。在下方建立一個！</string>
+  <string name="category_management_create_button">建立新分類</string>
+  <string name="category_management_delete_title">刪除分類？</string>
+  <string name="category_management_delete_message_part1">這將刪除</string>
+  <string name="category_management_delete_subcategories">以及所有</string>
+  <string name="category_management_delete_subcategories_label">子分類</string>
+  <string name="category_management_delete_message_part2">包括</string>
+  <string name="category_management_delete_records">交易記錄。此操作無法復原</string>
+  <string name="category_management_delete_button">刪除</string>
+  <string name="category_management_edit_title">編輯分類</string>
+  <string name="category_management_create_title">建立分類</string>
+  <string name="category_management_name_label">名稱</string>
+  <string name="category_management_name_placeholder">輸入分類名稱</string>
+  <string name="category_management_characters">個字元</string>
+  <string name="category_management_icon_label">圖示</string>
+  <string name="category_management_icon_change">點擊變更表情符號</string>
+  <string name="category_management_color_label">顏色</string>
+  <string name="category_management_parent_label">父分類（選填）</string>
+  <string name="category_management_parent_none">無（主分類）</string>
+  <string name="category_management_parent_hint">選擇父分類以建立子分類</string>
+  <string name="category_management_save_button">儲存變更</string>
+  <string name="category_management_create_save_button">建立</string>
+  <string name="category_management_move_title">移動分類</string>
+  <string name="category_management_moving_label">正在移動</string>
+  <string name="category_management_move_to_label">移動到</string>
+  <string name="category_management_main_category">主分類</string>
+  <string name="category_management_main_category_hint">將其設為頂層分類</string>
+  <string name="category_management_subcategories_label">子分類</string>
+
+  <!-- Budget -->
+  <string name="budget_title">預算</string>
+  <string name="budget_subtitle">管理您的支出限額</string>
+  <string name="budget_loading">載入預算中...</string>
+  <string name="budget_total_monthly">每月總預算</string>
+  <string name="budget_spent">已支出</string>
+  <string name="budget_remaining">剩餘</string>
+  <string name="budget_category_budgets">分類預算</string>
+  <string name="budget_no_budgets">還沒有設定預算</string>
+  <string name="budget_create_first">建立您的第一個預算</string>
+  <string name="budget_over_budget">超出預算</string>
+  <string name="budget_used">已使用</string>
+  <string name="budget_left">剩餘</string>
+  <string name="budget_add_new">新增預算</string>
+
+  <!-- Profile -->
+  <string name="profile_title">個人資料</string>
+  <string name="profile_edit_button">編輯</string>
+  <string name="profile_save_button">儲存</string>
+  <string name="profile_personal_info">個人資訊</string>
+  <string name="profile_full_name">全名</string>
+  <string name="profile_name_placeholder">輸入您的姓名</string>
+  <string name="profile_email">電子郵件</string>
+  <string name="profile_phone">電話號碼</string>
+  <string name="profile_phone_placeholder">輸入您的電話</string>
+  <string name="profile_location">地區</string>
+  <string name="profile_location_placeholder">輸入您的地區</string>
+  <string name="profile_birth_date">出生日期</string>
+  <string name="profile_currency">貨幣</string>
+  <string name="profile_currency_select">選擇貨幣</string>
+  <string name="profile_currency_not_set">未設定</string>
+  <string name="profile_account_stats">帳戶統計</string>
+  <string name="profile_transactions">交易</string>
+  <string name="profile_active_budgets">啟用預算</string>
+  <string name="profile_months_active">活躍月數</string>
+  <string name="profile_saved">已儲存</string>
+  <string name="profile_logout_button">登出</string>
+  <string name="profile_currency_modal_title">選擇貨幣</string>
+  <string name="profile_currency_search_placeholder">搜尋貨幣...</string>
+  <string name="profile_avatar_modal_title">選擇頭像</string>
+  <string name="profile_avatar_tip">💡 提示：選擇最能代表您的頭像！</string>
+
+  <!-- Transactions -->
+  <string name="transactions_title">交易</string>
+  <string name="transactions_filter_type">類型</string>
+  <string name="transactions_all">全部</string>
+  <string name="transactions_filter_category">分類</string>
+  <string name="transactions_all_categories">所有分類</string>
+  <string name="transactions_filter_date_range">日期範圍</string>
+  <string name="transactions_clear_filters">清除所有篩選</string>
+  <string name="transactions_no_transactions">未找到交易</string>
+  <string name="transactions_one_transaction">1 筆交易</string>
+  <string name="transactions_count">筆交易</string>
+  <string name="transactions_filtered">已篩選</string>
+  <string name="transactions_empty_title">未找到交易</string>
+  <string name="transactions_empty_filtered">嘗試調整您的篩選條件以查看更多結果</string>
+  <string name="transactions_empty_message">透過新增您的第一筆交易開始追蹤您的財務</string>
+
+  <!-- More Statistics -->
+  <string name="more_statistics_title">更多統計</string>
+  <string name="more_statistics_test_data_title">僅測試資料</string>
+  <string name="more_statistics_test_data_description">以下統計資料僅為範例資料，用於展示目的。真實的分析功能將在未來更新中實作。</string>
+  <string name="more_statistics_weekly_comparison">每週對比</string>
+  <string name="more_statistics_last_week">上週</string>
+  <string name="more_statistics_this_week">本週</string>
+
+  <!-- Currency Names -->
+  <string name="currency_usd">美元</string>
+  <string name="currency_cny">人民幣</string>
+  <string name="currency_hkd">港幣</string>
+  <string name="currency_twd">新臺幣</string>
+</resources>

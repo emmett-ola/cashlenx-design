@@ -4,7 +4,7 @@ interface InputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  type?: 'text' | 'number';
+  type?: 'text' | 'number' | 'email' | 'password';
   variant?: 'filled' | 'underlined';
   icon?: React.ReactNode;
   disabled?: boolean;

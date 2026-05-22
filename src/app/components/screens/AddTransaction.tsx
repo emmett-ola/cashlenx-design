@@ -6,6 +6,7 @@ import { Button } from '../atoms/Button';
 import { DatePicker } from '../molecules/DatePicker';
 import { CategoryService, SystemConfigService } from '../../services/localStorage';
 import { CategoryEntity } from '../../types/entities';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 interface AddTransactionProps {
   onClose: () => void;
@@ -13,6 +14,7 @@ interface AddTransactionProps {
 }
 
 export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
+  const { t } = useSafeI18n();
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const [amount, setAmount] = useState('0');
   const [showDetails, setShowDetails] = useState(false);
@@ -139,8 +141,8 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
       <div className="bg-white w-full max-w-lg rounded-t-3xl shadow-2xl animate-in slide-in-from-bottom duration-300 flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200">
-          <h2>Add Transaction</h2>
-          <button 
+          <h2>{t('add_transaction_title')}</h2>
+          <button
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
           >
@@ -164,7 +166,7 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
                   }`}
                   style={type === t ? { color: 'var(--theme-color)' } : {}}
                 >
-                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                  {t === 'income' ? t('add_transaction_income') : t('add_transaction_expense')}
                 </button>
               ))}
             </div>
@@ -173,7 +175,7 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
           {/* Amount Display */}
           <div className={`px-4 py-6 text-center ${errors.amount ? 'animate-shake' : ''}`}>
             <p className={`text-sm mb-2 ${errors.amount ? 'text-red-500 font-semibold' : 'text-gray-500'}`}>
-              {errors.amount ? 'Amount must be greater than 0' : 'Amount'}
+              {errors.amount ? t('add_transaction_amount_error') : t('add_transaction_amount_label')}
             </p>
             <button
               onClick={() => setShowDetails(false)}
@@ -190,12 +192,12 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
               {showDetails ? (
                 <>
                   <ChevronUp className="w-4 h-4" />
-                  Hide Details
+                  {t('add_transaction_hide_details')}
                 </>
               ) : (
                 <>
                   <ChevronDown className="w-4 h-4" />
-                  Show Details
+                  {t('add_transaction_show_details')}
                 </>
               )}
             </button>
@@ -207,12 +209,12 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
               {/* Category Grid */}
               <div className={errors.category ? 'animate-shake' : ''}>
                 <label className={`block text-sm font-medium mb-2 ${errors.category ? 'text-red-500 font-semibold' : 'text-gray-700'}`}>
-                  {errors.category ? 'Please select a category' : 'Category'}
+                  {errors.category ? t('add_transaction_category_error') : t('add_transaction_category_label')}
                 </label>
 
                 {displayCategories.length === 0 && (
                   <div className="text-center py-8 text-gray-400 text-sm">
-                    No categories available. Please create some in Settings.
+                    {t('add_transaction_no_categories')}
                   </div>
                 )}
 
@@ -248,7 +250,7 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
                 
                 {selectedCategory && (
                   <div className="mt-2 text-sm text-gray-600 text-center">
-                    Selected: <span className="font-semibold" style={{ color: 'var(--theme-color)' }}>{selectedCategory.name}</span>
+                    {t('add_transaction_selected')}: <span className="font-semibold" style={{ color: 'var(--theme-color)' }}>{selectedCategory.name}</span>
                   </div>
                 )}
               </div>
@@ -257,7 +259,7 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <Calendar className="w-4 h-4 inline mr-1" />
-                  Date
+                  {t('add_transaction_date_label')}
                 </label>
                 <DatePicker
                   value={date}
@@ -269,12 +271,12 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <FileText className="w-4 h-4 inline mr-1" />
-                  Note (Optional)
+                  {t('add_transaction_note_label')}
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Add a note..."
+                  placeholder={t('add_transaction_note_placeholder')}
                   className="w-full px-4 py-3 bg-gray-100 rounded-lg outline-none focus:ring-2 resize-none"
                   style={{ '--tw-ring-color': 'var(--theme-color)' } as React.CSSProperties}
                   rows={2}
@@ -294,7 +296,7 @@ export function AddTransaction({ onClose, onSubmit }: AddTransactionProps) {
             onClick={handleSubmit}
             className="w-full"
           >
-            Add Transaction
+            {t('add_transaction_submit_button')}
           </Button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDownLeft, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 
 interface SummaryCardProps {
   totalBalance: number;
@@ -113,12 +113,8 @@ export function SummaryCard({
             <span className="text-xs opacity-90">Income</span>
           </div>
           <p className="font-semibold">${displayIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-          <div className="flex items-center gap-1 text-xs">
-            <TrendingUp className="w-4 h-4 text-[#10B981]" />
-            <span className="text-[#10B981]">{incomeTrend.percent}% {incomeTrend.period}</span>
-          </div>
         </div>
-        
+
         <div className="flex-1 bg-gray-800/30 backdrop-blur-sm rounded-xl p-3">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-6 h-6 bg-[#EF4444] rounded-full flex items-center justify-center">
@@ -127,10 +123,6 @@ export function SummaryCard({
             <span className="text-xs opacity-90">Expense</span>
           </div>
           <p className="font-semibold">${displayExpense.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
-          <div className="flex items-center gap-1 text-xs">
-            <TrendingDown className="w-4 h-4 text-[#EF4444]" />
-            <span className="text-[#EF4444]">{expenseTrend.percent}% {expenseTrend.period}</span>
-          </div>
         </div>
       </div>
     </div>

@@ -16,12 +16,14 @@ import { APP_COLOR_PALETTE } from '../../constants/colors';
 import { layout } from '../../constants/sharedStyles';
 import { CategoryService, SystemConfigService, CashFlowService } from '../../services/localStorage';
 import { CategoryEntity } from '../../types/entities';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 interface CategoryManagementProps {
   onCategoryChange?: () => void; // Callback to trigger refresh in parent components
 }
 
 export function CategoryManagement({ onCategoryChange }: CategoryManagementProps = {}) {
+  const { t } = useSafeI18n();
   const [activeType, setActiveType] = useState<'expense' | 'income'>('expense');
   const [categories, setCategories] = useState<CategoryEntity[]>([]);
   
@@ -371,8 +373,8 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
       <div className={layout.header}>
         <div className={layout.headerContent}>
           <div className="py-6">
-            <h1 className={layout.headerTitle}>Categories</h1>
-            <p className="text-gray-500 text-sm mt-1">Manage your categories</p>
+            <h1 className={layout.headerTitle}>{t('category_management_title')}</h1>
+            <p className="text-gray-500 text-sm mt-1">{t('category_management_subtitle')}</p>
           </div>
         </div>
       </div>
@@ -391,7 +393,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                     : 'text-gray-600'
                 }`}
               >
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+                {type === 'expense' ? t('category_management_expense') : t('category_management_income')}
               </button>
             ))}
           </div>
@@ -403,7 +405,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
             parentCategories.map((category) => renderCategory(category))
           ) : (
             <div className="p-8 text-center text-gray-400">
-              No {activeType} categories yet. Create one below!
+              {t('category_management_no_categories')}
             </div>
           )}
         </div>
@@ -412,13 +414,13 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
         <div className="mt-6 mb-6">
           <button
             className="w-full py-4 text-white rounded-xl font-semibold shadow-lg flex items-center justify-center gap-2 hover:shadow-xl transition-shadow"
-            style={{ 
-              background: `linear-gradient(to right, var(--theme-color), ${adjustColorBrightness(getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim(), 30)})` 
+            style={{
+              background: `linear-gradient(to right, var(--theme-color), ${adjustColorBrightness(getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim(), 30)})`
             }}
             onClick={handleCreateClick}
           >
             <Plus className="w-5 h-5" />
-            Create New Category
+            {t('category_management_create_button')}
           </button>
         </div>
       </div>
@@ -431,20 +433,19 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
               <AlertTriangle className="w-7 h-7 text-[#EF4444]" />
             </div>
 
-            <h2 className="text-center mb-2">Delete Category?</h2>
+            <h2 className="text-center mb-2">{t('category_management_delete_title')}</h2>
 
             <p className="text-center text-gray-600 mb-6">
-              This will delete "<strong>{deleteConfirm.category.name}</strong>"
+              {t('category_management_delete_message_part1')} "<strong>{deleteConfirm.category.name}</strong>"
               {deleteConfirm.category.parentId === null &&
                 getChildrenCount(deleteConfirm.category.id) > 0 && (
                   <span>
                     {' '}
-                    and all <strong>{getChildrenCount(deleteConfirm.category.id)}</strong>{' '}
-                    subcategories
+                    {t('category_management_delete_subcategories')} <strong>{getChildrenCount(deleteConfirm.category.id)}</strong>{' '}
+                    {t('category_management_delete_subcategories_label')}
                   </span>
                 )}
-              , including <strong>{getTotalRecords(deleteConfirm.category)}</strong> transaction
-              records. This action cannot be undone.
+              , {t('category_management_delete_message_part2')} <strong>{getTotalRecords(deleteConfirm.category)}</strong> {t('category_management_delete_records')}.
             </p>
 
             <div className="flex gap-3">
@@ -453,14 +454,14 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                 onClick={handleCancelDelete}
                 className="flex-1 border-2 border-gray-300"
               >
-                Cancel
+                {t('category_management_cancel_button')}
               </Button>
               <Button
                 variant="primary"
                 onClick={handleConfirmDelete}
                 className="flex-1 bg-[#EF4444] hover:bg-[#DC2626]"
               >
-                Delete
+                {t('category_management_delete_button')}
               </Button>
             </div>
           </div>
@@ -474,7 +475,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 flex-shrink-0">
               <h2>
-                {editPanel.mode === 'edit' ? 'Edit Category' : 'Create Category'}
+                {editPanel.mode === 'edit' ? t('category_management_edit_title') : t('category_management_create_title')}
               </h2>
               <button
                 onClick={handleCloseEditPanel}
@@ -498,7 +499,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
 
               {/* Name Input */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('category_management_name_label')}</label>
                 <input
                   type="text"
                   value={editForm.name}
@@ -511,24 +512,24 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                       }));
                     }
                   }}
-                  placeholder="Enter category name"
+                  placeholder={t('category_management_name_placeholder')}
                   maxLength={64}
                   autoComplete="off"
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent"
                 />
-                <p className="text-xs text-gray-400 mt-1">{editForm.name.length}/64 characters</p>
+                <p className="text-xs text-gray-400 mt-1">{editForm.name.length}/64 {t('category_management_characters')}</p>
               </div>
 
               {/* Icon Selector */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('category_management_icon_label')}</label>
                 <div className="relative">
                   <button
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl text-left flex items-center gap-3 hover:bg-gray-50 transition-colors"
                   >
                     <span className="text-2xl">{editForm.icon}</span>
-                    <span className="text-gray-600">Tap to change emoji</span>
+                    <span className="text-gray-600">{t('category_management_icon_change')}</span>
                   </button>
                   {showEmojiPicker && (
                     <>
@@ -552,7 +553,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
 
               {/* Color Selector */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('category_management_color_label')}</label>
                 <div className="grid grid-cols-4 gap-3 justify-items-center">
                   {APP_COLOR_PALETTE.map((color) => (
                     <button
@@ -577,7 +578,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
               {/* Parent Category Selector */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Parent Category (Optional)
+                  {t('category_management_parent_label')}
                 </label>
                 <select
                   value={editForm.parentId || ''}
@@ -589,7 +590,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                   }
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent bg-white"
                 >
-                  <option value="">None (Main Category)</option>
+                  <option value="">{t('category_management_parent_none')}</option>
                   {parentCategories
                     .filter((cat) => editPanel.category?.id !== cat.id)
                     .map((cat) => (
@@ -599,7 +600,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                     ))}
                 </select>
                 <p className="text-xs text-gray-400 mt-1">
-                  Select a parent to create a subcategory
+                  {t('category_management_parent_hint')}
                 </p>
               </div>
             </div>
@@ -612,7 +613,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                   onClick={handleCloseEditPanel}
                   className="flex-1 border-2 border-gray-300"
                 >
-                  Cancel
+                  {t('category_management_cancel_button')}
                 </Button>
                 <Button
                   variant="primary"
@@ -620,7 +621,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                   disabled={!editForm.name.trim()}
                   className="flex-1 bg-gradient-to-r from-[#008080] to-[#4DB6AC] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {editPanel.mode === 'edit' ? 'Save Changes' : 'Create'}
+                  {editPanel.mode === 'edit' ? t('category_management_save_button') : t('category_management_create_save_button')}
                 </Button>
               </div>
             </div>
@@ -634,7 +635,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-semibold text-gray-900">Move Category</h2>
+              <h2 className="font-semibold text-gray-900">{t('category_management_move_title')}</h2>
               <button
                 onClick={() => setMovePanel({ show: false, category: null })}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
@@ -645,7 +646,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
 
             {/* Current Category Display */}
             <div className="mb-6">
-              <p className="text-sm text-gray-500 mb-2">Moving:</p>
+              <p className="text-sm text-gray-500 mb-2">{t('category_management_moving_label')}:</p>
               <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0"
@@ -661,7 +662,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
 
             {/* Move Options */}
             <div className="mb-6">
-              <p className="text-sm font-medium text-gray-700 mb-3">Move to:</p>
+              <p className="text-sm font-medium text-gray-700 mb-3">{t('category_management_move_to_label')}:</p>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {/* Option: Make it a main category */}
                 <button
@@ -680,7 +681,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                     const userCategories = CategoryService.getByUserId(userId);
                     setCategories(userCategories.filter(cat => cat.type === activeType));
                     setMovePanel({ show: false, category: null });
-                    
+
                     // Trigger refresh in parent components
                     if (onCategoryChange) onCategoryChange();
                   }}
@@ -694,8 +695,8 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                     ⭐
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-medium text-gray-900">Main Category</p>
-                    <p className="text-xs text-gray-500">Make it a top-level category</p>
+                    <p className="font-medium text-gray-900">{t('category_management_main_category')}</p>
+                    <p className="text-xs text-gray-500">{t('category_management_main_category_hint')}</p>
                   </div>
                 </button>
 
@@ -741,7 +742,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
                       <div className="flex-1 text-left">
                         <p className="font-medium text-gray-900">{parent.name}</p>
                         <p className="text-xs text-gray-500">
-                          {getChildrenCount(parent.id)} subcategories
+                          {getChildrenCount(parent.id)} {t('category_management_subcategories_label')}
                         </p>
                       </div>
                     </button>
@@ -755,7 +756,7 @@ export function CategoryManagement({ onCategoryChange }: CategoryManagementProps
               onClick={() => setMovePanel({ show: false, category: null })}
               className="w-full border-2 border-gray-300"
             >
-              Cancel
+              {t('category_management_cancel_button')}
             </Button>
           </div>
         </div>

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Logo } from '../atoms/Logo';
+import { I18nContext } from '../../contexts/I18nContext';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -13,7 +14,11 @@ interface AuthLayoutProps {
  * Shared layout for authentication screens (Login, Sign Up)
  * Reusable component to maintain consistency across auth flows
  */
-export function AuthLayout({ children, onBack, title = 'CashLenX', subtitle = 'Your Financial Companion' }: AuthLayoutProps) {
+export function AuthLayout({ children, onBack, title = 'CashLenX', subtitle }: AuthLayoutProps) {
+  // Safely get i18n context, fall back to default if not available
+  const i18nContext = useContext(I18nContext);
+  const displaySubtitle = subtitle || (i18nContext?.t('auth_subtitle') ?? 'Your Financial Companion');
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F9FAFB] to-white flex flex-col">
       {/* Header */}
@@ -40,7 +45,7 @@ export function AuthLayout({ children, onBack, title = 'CashLenX', subtitle = 'Y
               {title}
             </h1>
             <p className="text-gray-500">
-              {subtitle}
+              {displaySubtitle}
             </p>
           </div>
 

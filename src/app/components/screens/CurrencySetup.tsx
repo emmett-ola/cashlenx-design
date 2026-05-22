@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, Check } from 'lucide-react';
 import { Input } from '../atoms/Input';
 import { Button } from '../atoms/Button';
+import { useSafeI18n } from '../../contexts/I18nContext';
 
 interface CurrencySetupProps {
   onComplete: (currency: string) => void;
@@ -21,6 +22,7 @@ const currencies = [
 ];
 
 export function CurrencySetup({ onComplete }: CurrencySetupProps) {
+  const { t } = useSafeI18n();
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState('USD');
 
@@ -33,14 +35,14 @@ export function CurrencySetup({ onComplete }: CurrencySetupProps) {
   return (
     <div className="min-h-screen bg-[#F9FAFB] px-4 py-8">
       <div className="max-w-lg mx-auto">
-        <h1 className="mb-2">Select Your Currency</h1>
-        <p className="text-gray-600 mb-6">Choose your primary currency for all transactions</p>
+        <h1 className="mb-2">{t('currency_setup_title')}</h1>
+        <p className="text-gray-600 mb-6">{t('currency_setup_subtitle')}</p>
 
         <div className="mb-6">
           <Input
             value={search}
             onChange={setSearch}
-            placeholder="Search currency..."
+            placeholder={t('currency_setup_search_placeholder')}
             icon={<Search className="w-5 h-5" />}
           />
         </div>
@@ -73,7 +75,7 @@ export function CurrencySetup({ onComplete }: CurrencySetupProps) {
           onClick={() => onComplete(selected)}
           className="w-full"
         >
-          Continue
+          {t('currency_setup_continue_button')}
         </Button>
       </div>
     </div>

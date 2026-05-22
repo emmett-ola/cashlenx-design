@@ -1,38 +1,41 @@
 import React from 'react';
 import { Wallet } from 'lucide-react';
+import { getCurrencySymbol } from '../../utils/currency';
 
 interface TransactionTileProps {
   // Legacy props (for backward compatibility)
   icon?: React.ReactNode;
   iconBg?: string;
   title?: string;
-  
+
   // New props (from dataService)
   category?: string;
   categoryIcon?: string;
   categoryBgColor?: string; // New prop for category background color
   description?: string;
-  
+
   // Common props
   date: string;
   amount: number;
   type: 'income' | 'expense';
 }
 
-export function TransactionTile({ 
-  icon, 
-  iconBg, 
+export function TransactionTile({
+  icon,
+  iconBg,
   title,
   category,
   categoryIcon,
   categoryBgColor, // New prop
   description,
-  date, 
-  amount, 
-  type 
+  date,
+  amount,
+  type
 }: TransactionTileProps) {
-  const amountColor = type === 'income' ? 'text-[#10B981]' : 'text-[#EF4444]';
+  // Swapped colors: expense = green, income = red
+  const amountColor = type === 'expense' ? 'text-[#10B981]' : 'text-[#EF4444]';
   const amountPrefix = type === 'income' ? '+' : '-';
+  const currencySymbol = getCurrencySymbol();
   
   // Get theme color from CSS variable
   const getThemeColor = () => {
@@ -91,7 +94,7 @@ export function TransactionTile({
       </div>
       
       <div className={`font-semibold ${amountColor}`}>
-        {amountPrefix}${Math.abs(amount).toFixed(2)}
+        {amountPrefix}{currencySymbol}{Math.abs(amount).toFixed(2)}
       </div>
     </div>
   );
