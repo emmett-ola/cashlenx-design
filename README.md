@@ -29,6 +29,13 @@ npm install
 npm run dev
 ```
 
+## Contributing And Security
+
+- [Contribution Guide](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [Shared Governance](https://github.com/emmett-ola/cashlenx-spec/blob/main/GOVERNANCE.md)
+- [Shared Delivery Workflow](https://github.com/emmett-ola/cashlenx-spec/blob/main/WORKFLOW.md)
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE). Commercial use,
