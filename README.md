@@ -1,7 +1,19 @@
 # CashLenX Design
 
-CashLenX Design is the Figma-exported React/Vite visual and interaction
-reference for CashLenX. The original design project is available in
+## Archived
+
+This repository was archived on 2026-10-12. It preserves the early
+Figma-exported React/Vite product prototype and is no longer maintained as a
+parallel UI implementation or current visual authority.
+
+Current UI behavior and presentation are owned by
+[cashlenx-app](https://github.com/emmett-ola/cashlenx-app). Product rules,
+delivery workflow, and durable design decisions are owned by
+[cashlenx-spec](https://github.com/emmett-ola/cashlenx-spec). This prototype may
+still be consulted as historical evidence, but new work must not require parity
+with it.
+
+The original design project is available in
 [Figma](https://www.figma.com/design/Zk98sZ5w9YVOZlTR0AARV8/CashLenX-Design).
 
 ## CashLenX Project
@@ -13,14 +25,11 @@ explicit ownership boundaries:
 | --- | --- |
 | [cashlenx-app](https://github.com/emmett-ola/cashlenx-app) | Cross-platform Flutter client and user experience. |
 | [cashlenx-server](https://github.com/emmett-ola/cashlenx-server) | Go REST API, Cobra CLI, authentication, finance services, and MongoDB/MySQL persistence. |
-| [cashlenx-design](https://github.com/emmett-ola/cashlenx-design) | Figma-exported React/Vite visual and interaction reference. |
+| [cashlenx-design](https://github.com/emmett-ola/cashlenx-design) | Archived early product prototype retained as historical evidence. |
 | [cashlenx-website](https://github.com/emmett-ola/cashlenx-website) | Public product and developer-information website. |
 | [cashlenx-spec](https://github.com/emmett-ola/cashlenx-spec) | Product and system facts, delivery workflow, decisions, and retained evidence. |
 
-This repository owns the visual and interaction reference. Product behavior is
-implemented by the app and server repositories, while durable facts and
-delivery workflow are maintained in CashLenX Spec. The design bundle is not a
-runtime dependency of the application.
+The design bundle is not a runtime dependency of the application.
 
 ## Running the Code
 

@@ -1,5 +1,11 @@
 # Contributing to CashLenX
 
+This repository is archived and does not accept ongoing changes. Direct current
+UI contributions to
+[cashlenx-app](https://github.com/emmett-ola/cashlenx-app), and record durable
+product or design decisions in
+[cashlenx-spec](https://github.com/emmett-ola/cashlenx-spec).
+
 Thank you for helping improve CashLenX. The project is split across repositories
 with explicit ownership boundaries so that each area remains independently
 buildable and reviewable.
@@ -10,7 +16,7 @@ buildable and reviewable.
 | --- | --- |
 | [cashlenx-app](https://github.com/emmett-ola/cashlenx-app) | Flutter client and user experience. |
 | [cashlenx-server](https://github.com/emmett-ola/cashlenx-server) | Go API, CLI, authentication, finance services, and persistence. |
-| [cashlenx-design](https://github.com/emmett-ola/cashlenx-design) | Visual and interaction reference. |
+| [cashlenx-design](https://github.com/emmett-ola/cashlenx-design) | Archived early product prototype retained as historical evidence. |
 | [cashlenx-website](https://github.com/emmett-ola/cashlenx-website) | Public product and developer-information website. |
 | [cashlenx-spec](https://github.com/emmett-ola/cashlenx-spec) | Product/system facts, governance, workflow, decisions, and delivery evidence. |
 
